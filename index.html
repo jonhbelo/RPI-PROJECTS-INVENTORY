@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <title>RPI - Project Materials Inventory - Systems Projects</title>
+<script>try{var t=localStorage.getItem("rpi_theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}</script>
 <style>
 :root{--bg:#ffffff;--sf:#fff;--tx:#1c2430;--mu:#667085;--bd:#e3e6eb;--ac:#2f6fed;--acx:#fff;--ok:#1a7f4b;--bad:#c0392b;--warn:#b7791f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14171c;--sf:#1d2128;--tx:#e8ebf0;--mu:#97a0ad;--bd:#2d333c;--ac:#5b8def;--acx:#0d1117;--ok:#4cc38a;--bad:#ef7b6d;--warn:#e0b050;color-scheme:dark}}
@@ -71,37 +72,41 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
 #app.zin{animation:zin .48s ease-out both}@keyframes zin{from{opacity:0;transform:scale(.82)}to{opacity:1;transform:scale(1)}}
 @media (prefers-reduced-motion:reduce){#auth.zout,#app.zin{animation:none}}
 @media(max-width:700px){.app{flex-direction:column}nav{width:100%;display:flex;flex-direction:row;align-items:center;gap:4px;padding:10px;border-right:0;border-bottom:1px solid var(--bd)}nav h1{display:none}nav button{margin:0;justify-content:center;padding:9px 6px;font-size:13px}nav button span{display:none}main{padding:16px}nav{overflow:visible;flex-wrap:wrap;gap:2px;padding:8px 6px}.ttl{flex:0 0 100%;margin:2px 6px 6px;text-align:center}nav button[data-t]{flex:1 1 0;min-width:0;white-space:normal;text-align:center;justify-content:center;font-size:11px;line-height:1.15;padding:8px 2px}#c4{display:inline}nav .nu .av{margin:0 0 0 2px;width:34px;height:34px;flex:0 0 34px}.nu{display:flex;margin:0 0 0 auto;gap:4px}.pop{left:auto;right:10px;bottom:auto;top:58px}input,select{font-size:16px}}
+.tg{width:34px;height:34px;border-radius:50%;border:1px solid var(--bd);background:var(--sf);color:var(--tx);cursor:pointer;font-size:16px;line-height:1;padding:0;display:inline-flex;align-items:center;justify-content:center;flex:none}.tg.fx{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:12px;z-index:101}
 </style>
 </head>
 <body>
 <div id="ld" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;color:#97a0ad;font:15px system-ui,sans-serif">Loading…</div>
 <script>window.addEventListener('error',function(e){var d=document.getElementById('ld');if(d){d.style.color='#ef7b6d';d.textContent='Page error: '+e.message+' (line '+e.lineno+'). The file may have been edited incorrectly.'}});window.addEventListener('unhandledrejection',function(e){var d=document.getElementById('ld');if(d){d.style.color='#ef7b6d';d.textContent='Error: '+((e.reason&&e.reason.message)||e.reason)}});</script>
-<div id="auth" style="display:none"><form class="ac" id="aForm" onsubmit="authSubmit(event);return false" novalidate>
+<div id="auth" style="display:none"><button type="button" class="tg fx" onclick="toggleTheme()"></button><form class="ac" id="aForm" onsubmit="authSubmit(event);return false" novalidate>
 <h2 id="aT"></h2><p class="sub" id="aS"></p>
 <label id="aNm" style="margin-bottom:12px">Name<input id="aName" autocomplete="name"></label>
-<label>Email<input id="aEmail" type="email" autocomplete="username" placeholder="name@riteproducts.com.ph"></label>
+<label id="aUn" style="margin-bottom:12px">Username<input id="aUser" autocomplete="off" autocapitalize="none" placeholder="e.g. jbelo"></label>
+<label><span id="aEL">Email or username</span><input id="aEmail" type="text" autocomplete="username" autocapitalize="none" placeholder="Email or username"></label>
 <label style="margin-top:12px">Password<input id="aPass" type="password" autocomplete="current-password"></label>
 <label id="aC" style="margin-top:12px">Confirm password<input id="aConf" type="password" autocomplete="new-password"></label>
+<label id="aCd" style="margin-top:12px">Setup code<input id="aCode" autocomplete="off" autocapitalize="characters"></label>
 <button class="btn" id="aB" style="width:100%;margin-top:16px"></button>
-<button type="button" class="btn g" id="aSw" onclick="swMode()" style="width:100%;margin-top:10px"></button><div id="aMsg" class="am"></div><div style="color:var(--mu);text-align:center;margin-top:14px;font-size:11px">Version 9</div></form>
+<button type="button" class="btn g" id="aSw" onclick="swMode()" style="width:100%;margin-top:10px"></button><div id="aMsg" class="am"></div><div style="color:var(--mu);text-align:center;margin-top:14px;font-size:11px">Version 1.1</div></form>
 <div class="ac" id="blk" style="display:none"><h2 id="bT"></h2><p class="sub" id="bM" style="margin:0"></p></div></div>
 <div id="intro"><img alt="Rite Products, Incorporated" src="data:image/png;base64,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"></div>
 <div id="pop" class="pop" style="display:none"><b id="pn"></b><small id="pe"></small><button class="btn g" onclick="logout()">Log out</button></div>
 <div class="app" id="app" style="display:none">
 <nav>
-<div class="ttl"><b>RITE PRODUCTS, INCORPORATED</b><small>Systems Project - Inventory</small></div>
+<div class="ttl"><b>RITE PRODUCTS, INCORPORATED</b><small>Systems Project - Inventory · v1.1</small></div>
 <button data-t="stocks">Stocks <span id="c1"></span></button>
 <button data-t="received">Received Items <span id="c2"></span></button>
 <button data-t="delivered">Delivered Items <span id="c3"></span></button>
 <button data-t="settings">Settings</button>
 <button data-t="users" id="tUsers" style="display:none">Users <span id="c4"></span></button>
-<div class="nu"><button id="av" class="av" onclick="togglePop(event)" title="Account"></button></div>
+<div class="nu"><div style="display:flex;align-items:center;gap:8px"><button type="button" class="tg" onclick="toggleTheme()"></button><button id="av" class="av" onclick="togglePop(event)" title="Account"></button></div></div>
 </nav>
 <main id="main"></main>
 </div>
 <script>
 /* ===== SETTINGS (edit these when hosting on GitHub Pages) ===== */
 const ADMIN_EMAIL='jonh.belo@riteproducts.com.ph';   // only this email can create the admin account
+const API_URL='PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';   // ends in /exec. See README.
 const FB={apiKey:'',projectId:''};                   // your Firebase web app details (see setup steps)
 /* =============================================================== */
 const K='inv_v1';
@@ -131,7 +136,7 @@ function addLine(){document.getElementById('lines').insertAdjacentHTML('beforeen
 
 function stocks(){
  const e=isEd('items')?item(editing.id):null;
- const list=S.items.filter(i=>i.name.toLowerCase().includes(q.toLowerCase()));
+ const list=S.items.filter(i=>i.name.toLowerCase().includes(q.toLowerCase())).slice().sort((a,b)=>(b.ts||0)-(a.ts||0));
  const low=S.items.filter(i=>qty(i.id)<=i.min).length;
  return `<h2>Stocks</h2><p class="sub">On hand = beginning balance + received − delivered.</p>
  <div class="stats"><div class="stat"><b>${S.items.length}</b><small>Item types</small></div><div class="stat"><b>${low}</b><small>Low or out of stock</small></div></div>
@@ -150,8 +155,9 @@ function groups(kind){
  const gm=new Map();
  tx.forEach((rs,k)=>{const n=numOf(kind,rs[0]),gk=n||'\0'+k;if(!gm.has(gk))gm.set(gk,{num:n,txs:[]});gm.get(gk).txs.push({id:k,rs})});
  const out=[...gm.values()];
- out.forEach(g=>g.txs.sort((x,y)=>x.rs[0].date.localeCompare(y.rs[0].date)));
- out.sort((x,y)=>y.txs[y.txs.length-1].rs[0].date.localeCompare(x.txs[x.txs.length-1].rs[0].date));
+ const tsOf=r=>r.ts||Date.parse(r.date)||0,txTs=t=>Math.max(...t.rs.map(tsOf));
+ out.forEach(g=>g.txs.sort((x,y)=>txTs(y)-txTs(x)));
+ out.sort((x,y)=>txTs(y.txs[0])-txTs(x.txs[0]));
  return out;
 }
 function log(kind){
@@ -162,13 +168,13 @@ function log(kind){
  <div class="card${e?' edit':''}"><div class="row">
  <label>Date<input id="d" type="date" value="${e?esc(e.date):today()}"></label>
  <label>${rec?'Supplier':'Project'}<input id="p1" value="${esc(e?e.a:'')}" placeholder="${rec?'Supplier name':'Project name'}"></label>
- ${rec?`<label>Project (optional)<input id="p2" value="${esc(e?e.b:'')}"></label><label>Sales Invoice No.<input id="p3" value="${esc(e?e.inv:'')}"></label><label>PO No.<input id="p4" value="${esc(e?e.po:'')}"></label>`
+ ${rec?`<label>Project (optional)<input id="p2" value="${esc(e?e.b:'')}"></label><label>Sales Invoice No.<input id="p3" value="${esc(e?e.inv:'')}"></label><label>PO No.<input id="p4" value="${esc(e?e.po:'')}"></label><label>JO No. (optional)<input id="p5" value="${esc(e?e.jo:'')}"></label>`
  :`<label>JO No.<input id="p3" value="${esc(e?e.jo:'')}"></label><label>DR No.<input id="p4" value="${esc(e?e.ref:'')}"></label>`}</div>
  <datalist id="il">${dl}</datalist>
  <div id="lines" style="margin-top:12px">${recs.length?recs.map((r,i)=>logLine(r,i>0)).join(''):logLine(null,0)}</div>
  <div class="row" style="margin-top:12px"><button class="btn g" onclick="addLine()">+ Add another item</button><button class="btn" onclick="saveLog('${kind}')">${e?'Update transaction':'Save transaction'}</button>${e?'<button class="btn g" onclick="cancel()">Cancel</button>':''}</div><div id="msg">${msg}</div></div>
- <div class="card"><p class="sub" style="margin-bottom:8px">Click a ${rec?'PO No.':'DR No.'} to see all transactions under it.</p><div class="tw"><table style="min-width:0"><tr><th>${rec?'PO No.':'DR No.'}</th></tr>
- ${g.map((x,i)=>`<tr class="dc" onclick="view('${kind}',${i})"><td>${esc(x.num)||'(NO '+(rec?'PO':'DR')+' NO.)'}</td></tr>`).join('')||'<tr><td class="empty">'+(loaded?'Nothing recorded yet.':'Loading…')+'</td></tr>'}
+ <div class="card"><p class="sub" style="margin-bottom:8px">Each row groups every item recorded under one ${rec?'PO No.':'DR No.'}. Newest first. Click a row to see the details.</p><div class="tw"><table style="min-width:0"><tr><th>Date</th><th>${rec?'PO No.':'DR No.'}</th><th>${rec?'Supplier':'Project'}</th><th>JO No.</th><th class="n">Items</th></tr>
+ ${g.map((x,i)=>`<tr class="dc" onclick="view('${kind}',${i})">${(()=>{const h=x.txs[0].rs[0],ps=[...new Set(x.txs.map(t=>t.rs[0].a).filter(Boolean))],js=[...new Set(x.txs.map(t=>t.rs[0].jo).filter(Boolean))],ni=new Set(x.txs.flatMap(t=>t.rs.map(r=>r.itemId))).size;return `<td>${esc(h.date)}</td><td><b>${esc(x.num)||'(NO '+(rec?'PO':'DR')+' NO.)'}</b></td><td>${esc(ps[0]||'')||'—'}${ps.length>1?' +'+(ps.length-1):''}</td><td>${esc(js[0]||'')||'—'}${js.length>1?' +'+(js.length-1):''}</td><td class="n">${ni}</td>`})()}</tr>`).join('')||'<tr><td colspan="5" class="empty">'+(loaded?'Nothing recorded yet.':'Loading…')+'</td></tr>'}
  </table></div></div>`;
 }
 function view(kind,i){
@@ -177,7 +183,7 @@ function view(kind,i){
  const rec=kind==='received';
  const secs=g.txs.map((t,n)=>{
   const h=t.rs[0];
-  const f=rec?[['Date',h.date],['Supplier',h.a],['Project',h.b],['Sales Invoice No.',h.inv]]:[['Date',h.date],['Project',h.a],['JO No.',h.jo]];
+  const f=rec?[['Date',h.date],['Supplier',h.a],['Project',h.b],['Sales Invoice No.',h.inv],['JO No.',h.jo]]:[['Date',h.date],['Project',h.a],['JO No.',h.jo]];
   return `<div class="tsec"><div class="row" style="justify-content:space-between;align-items:center"><b>Transaction ${n+1}</b>${eb(kind,t.id)}</div><div class="kv">${f.map(([k,v])=>`<div><small>${k}</small><b>${esc(v)||'—'}</b></div>`).join('')}</div><div class="tw"><table style="min-width:0"><tr><th>Item</th><th class="n">Qty</th></tr>${t.rs.map(r=>{const it=item(r.itemId);return `<tr><td>${esc(it?it.name:'(removed item)')}</td><td class="n"><b>${r.qty}</b> ${esc(it?it.unit:'')}</td></tr>`}).join('')}</table></div></div>`}).join('');
  document.body.insertAdjacentHTML('beforeend',`<div class="mb" onclick="if(event.target===this)closeV()"><div class="md"><h3>${rec?'PO No.':'DR No.'}: ${esc(g.num)||'—'}</h3><small style="color:var(--mu)">${g.txs.length} transaction${g.txs.length>1?'s':''}</small>${secs}<div class="row" style="margin-top:14px;justify-content:flex-end"><button class="btn g" onclick="closeV()">Close</button></div></div></div>`);
 }
@@ -236,7 +242,7 @@ async function _saveLog(kind){
  await sync(!isEd(kind));
  if(isEd(kind)&&!canEd(kind,editing.id))return err('You need the admin’s approval to edit this.');
  const snap=JSON.stringify(S),ed=isEd(kind),tx=ed?editing.id:uid(),d=val('d')||today();
- const h=kind==='received'?{date:d,a:val('p1'),b:val('p2'),inv:val('p3'),po:val('p4')}:{date:d,a:val('p1'),jo:val('p3'),ref:val('p4')};
+ const h=kind==='received'?{date:d,a:val('p1'),b:val('p2'),inv:val('p3'),po:val('p4'),jo:val('p5')}:{date:d,a:val('p1'),jo:val('p3'),ref:val('p4')};
  const at=ed?S[kind].findIndex(r=>txOf(r)===tx):-1,nr=[],base=(ed&&(S[kind].find(r=>txOf(r)===tx)||{}).ts)||Date.now();
  if(ed)S[kind]=S[kind].filter(r=>txOf(r)!==tx);
  for(const o of rows){
@@ -263,7 +269,26 @@ try{me=sessionStorage.getItem(SK)}catch(e){}
 const LK={state:K,users:UK,reqs:RK},L=x=>x?(Array.isArray(x)?x:x.list||[]):[];
 let gen=0,wc=0,lastErr='',dirty=false,loaded=false;
 const COLS=['items','received','delivered'];
-const tmo=p=>Promise.race([p,new Promise((_,j)=>setTimeout(()=>j({code:'timeout'}),15000))]);
+let TOK='';try{TOK=sessionStorage.getItem('inv_tok')||''}catch(e){}
+const setTok=t=>{TOK=t||'';try{t?sessionStorage.setItem('inv_tok',t):sessionStorage.removeItem('inv_tok')}catch(e){}};
+async function api(a,p){
+ const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({a,t:TOK},p||{})),redirect:'follow'});
+ const j=await r.json();
+ if(j.err){if(j.err==='auth'&&me){setTok('');me=null;try{sessionStorage.removeItem(SK)}catch(e){}showAuth()}throw Object.assign(new Error(j.err),{code:j.err})}
+ return j.ok;
+}
+let snapP=null,snapT=0;
+const snapshot=()=>{if(snapP&&Date.now()-snapT<500)return snapP;snapT=Date.now();snapP=api('snapshot');snapP.catch(()=>{snapP=null});return snapP};
+function apiDB(){
+ let q=[],tm=null;
+ const flush=async()=>{const b=q;q=[];tm=null;try{const res=await api('batch',{ops:b.map(x=>x.op)});b.forEach((x,i)=>{const r=res[i]||{};if(r.err)x.no(Object.assign(new Error(r.err),{code:r.err}));else x.ok(true)})}catch(e){b.forEach(x=>x.no(e))}};
+ const w=op=>new Promise((ok,no)=>{q.push({op:JSON.parse(JSON.stringify(op)),ok,no});if(!tm)tm=setTimeout(flush,30)});
+ return {
+  doc:p=>({set:v=>w({t:'set',p,d:v}),create:v=>w({t:'create',p,d:v}),update:v=>w({t:'update',p,d:v}),delete:()=>w({t:'delete',p})}),
+  collection:c=>({get:async()=>({docs:((await snapshot())[c]||[]).map(d=>({data:()=>d}))})})
+ };
+}
+const tmo=p=>Promise.race([p,new Promise((_,j)=>setTimeout(()=>j({code:'timeout'}),40000))]);
 async function ld(n){try{const r=localStorage.getItem(LK[n]);return r?JSON.parse(r):null}catch(e){return false}}
 async function ldAll(c){try{if(DB)return (await tmo(DB.collection(c).get())).docs.map(d=>d.data());return L(JSON.parse(localStorage.getItem(LK[c])||'null'))}catch(e){return null}}
 async function sv(n,v){wc++;try{localStorage.setItem(LK[n],JSON.stringify(v));lastErr='';return true}catch(e){lastErr='error';return false}finally{wc--;gen++}}
@@ -309,7 +334,8 @@ async function sync(core){
 const hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
 const unhex=h=>new Uint8Array(h.match(/../g).map(x=>parseInt(x,16)));
 async function hashPw(pw,salt){const k=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveBits']);return hex(await crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',salt,iterations:150000},k,256))}
-async function mkUser(email,pw,admin,name){const salt=crypto.getRandomValues(new Uint8Array(16));return {id:uid(),email,name:name||'',salt:hex(salt),hash:await hashPw(pw,salt),admin}}
+const UNRX=/^[a-z0-9._-]{3,24}$/,UNMSG='Username must be 3 to 24 characters: letters, numbers, dot, dash or underscore.';
+async function mkUser(email,pw,admin,name,username){const salt=crypto.getRandomValues(new Uint8Array(16));return {id:uid(),email,username:username||'',name:name||'',salt:hex(salt),hash:await hashPw(pw,salt),admin}}
 const DOM='@riteproducts.com.ph',mailMsg='Use your @riteproducts.com.ph email address.';
 const okMail=s=>/^\S+@\S+\.\S+$/.test(s)&&s.endsWith(DOM)&&s.length>DOM.length;
 const idOf=u=>u.id||u.email,meU=()=>U.find(x=>idOf(x)===me),isAdmin=()=>!!(meU()||{}).admin;
@@ -330,46 +356,54 @@ async function reqEdit(k,id){
  closeV();go();
 }
 async function decide(id,st){await sync();const r=R.find(x=>x.id===id);if(r&&isAdmin()){r.st=st;await wr('reqs',id,{st},1)}go()}
-function chrome(){const u=meU();if(!u)return;$('av').textContent=(u.name||u.email).trim().charAt(0).toUpperCase();$('pn').textContent=u.name||'';$('pe').textContent=u.email;$('tUsers').style.display=u.admin?'':'none';const n=R.filter(r=>r.st==='pending').length;$('c4').textContent=u.admin&&n?n:''}
+function chrome(){const u=meU();if(!u)return;$('av').textContent=(u.name||u.email).trim().charAt(0).toUpperCase();$('pn').textContent=u.name||'';$('pe').textContent=u.email+(u.username?' · @'+u.username:'');$('tUsers').style.display=u.admin?'':'none';const n=R.filter(r=>r.st==='pending').length;$('c4').textContent=u.admin&&n?n:''}
 function settings(){
  const u=meU();
- return `<h2>Settings</h2><p class="sub">${u.admin?'Administrator':'User'} account. Your email can’t be changed.</p>
- <div class="card"><h3>Profile</h3><div class="row"><label>Name<input id="sN" value="${esc(u.name||'')}"></label><label>Email<input type="email" value="${esc(u.email)}" disabled></label><button class="btn" onclick="saveProf()">Save profile</button></div><div class="am" id="sM1"></div></div>
+ return `<h2>Settings</h2><p class="sub">${u.admin?'Administrator':'User'} account. Your email can’t be changed. You can log in with your email or username.</p>
+ <div class="card"><h3>Profile</h3><div class="row"><label>Name<input id="sN" value="${esc(u.name||'')}"></label><label>Username<input id="sU" autocapitalize="none" value="${esc(u.username||'')}" placeholder="Choose a username"></label><label>Email<input type="email" value="${esc(u.email)}" disabled></label><button class="btn" onclick="saveProf()">Save profile</button></div><div class="am" id="sM1"></div></div>
  <div class="card"><h3>Change password</h3><div class="row"><label>Current password<input id="sP0" type="password" autocomplete="current-password"></label><label>New password<input id="sP1" type="password" autocomplete="new-password"></label><label>Confirm new password<input id="sP2" type="password" autocomplete="new-password"></label><button class="btn" onclick="savePw()">Change password</button></div><div class="am" id="sM2"></div></div>`;
 }
 const saveProf=()=>run(_saveProf);
 async function _saveProf(){
- await sync();const u=meU(),name=val('sN');
+ await sync();const u=meU(),name=val('sN'),un=$('sU').value.trim().toLowerCase();
  if(!u)return;
- if(!(await wr('users',u.id,{name},1)))return note('sM1','Could not save. Please try again.');
- u.name=name;chrome();note('sM1','Name saved.',1);
+ if(!UNRX.test(un))return note('sM1',UNMSG);
+ try{await tmo(api('profile',{name,username:un}))}catch(e){return note('sM1',e&&e.code==='username_taken'?'That username is already taken.':'Could not save. Please try again.')}
+ u.name=name;u.username=un;chrome();note('sM1','Name saved.',1);
 }
 const savePw=()=>run(_savePw);
 async function _savePw(){
  await sync();const u=meU(),p1=$('sP1').value,e=t=>note('sM2',t);
- if((await hashPw($('sP0').value,unhex(u.salt)))!==u.hash)return e('Current password is incorrect.');
+ if(!u)return;
  if(p1.length<8)return e('New password must be at least 8 characters.');
  if(p1!==$('sP2').value)return e('Passwords do not match.');
- const salt=crypto.getRandomValues(new Uint8Array(16));u.salt=hex(salt);u.hash=await hashPw(p1,salt);if(!(await wr('users',u.id,{salt:u.salt,hash:u.hash},1)))return e('Could not save. Please try again.');
+ try{
+  const s=await tmo(api('salt',{id:u.email})),oldHash=await hashPw($('sP0').value,unhex(s.salt));
+  const salt=crypto.getRandomValues(new Uint8Array(16));
+  await tmo(api('password',{oldHash,salt:hex(salt),hash:await hashPw(p1,salt)}));
+ }catch(x){return e(x&&x.code==='bad_login'?'Current password is incorrect.':x&&x.code==='locked'?'Too many attempts. Try again in 15 minutes.':'Could not save. Please try again.')}
  ['sP0','sP1','sP2'].forEach(i=>$(i).value='');note('sM2','Password changed.',1);
 }
 function usersTab(){
  const pend=R.filter(r=>r.st==='pending');
  return `<h2>Users</h2><p class="sub">Manage accounts and edit requests. Passwords are stored as one-way hashes, so they can’t be displayed. Use Reset password to set a new one.</p>
  <div class="card"><h3>Edit requests</h3>${pend.map(r=>{const u=U.find(x=>idOf(x)===r.by);return `<div class="row" style="justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bd)"><span><b>${esc(u?(u.name||u.email):'?')}</b> wants to edit ${r.kind==='items'?'stock item':r.kind} <b>${esc(r.label)}</b></span><span><button class="ab e" onclick="decide('${r.id}','approved')">Approve</button><button class="ab d" onclick="decide('${r.id}','denied')">Deny</button></span></div>`}).join('')||'<div class="empty">No pending requests.</div>'}</div>
- <div class="card"><h3>Add user</h3><div class="row"><label>Name<input id="nuN"></label><label>Email<input id="nuE" type="email" placeholder="name@riteproducts.com.ph"></label><label>Temporary password<input id="nuP" type="password" autocomplete="new-password"></label><button class="btn" onclick="addUser()">Add user</button></div><div class="am" id="nuM"></div></div>
- <div class="card"><div class="tw"><table><tr><th>Name</th><th>Email</th><th>Role</th><th>Password</th></tr>${U.map((u,i)=>`<tr><td>${esc(u.name||'—')}</td><td style="text-transform:none">${esc(u.email)}</td><td>${u.admin?'Admin':'User'}</td><td><button class="ab e" onclick="resetView(${i})">Reset password</button></td></tr>`).join('')}</table></div></div>`;
+ <div class="card"><h3>Add user</h3><div class="row"><label>Name<input id="nuN"></label><label>Username<input id="nuU" autocapitalize="none"></label><label>Email<input id="nuE" type="email" placeholder="name@riteproducts.com.ph"></label><label>Temporary password<input id="nuP" type="password" autocomplete="new-password"></label><button class="btn" onclick="addUser()">Add user</button></div><div class="am" id="nuM"></div></div>
+ <div class="card"><div class="tw"><table><tr><th>Name</th><th>Username</th><th>Email</th><th>Role</th><th>Password</th></tr>${U.map((u,i)=>`<tr><td>${esc(u.name||'—')}</td><td style="text-transform:none">${esc(u.username||'—')}</td><td style="text-transform:none">${esc(u.email)}</td><td>${u.admin?'Admin':'User'}</td><td><button class="ab e" onclick="resetView(${i})">Reset password</button></td></tr>`).join('')}</table></div></div>`;
 }
 const addUser=()=>run(_addUser);
 async function _addUser(){
  await sync();const em=$('nuE').value.trim().toLowerCase(),pw=$('nuP').value,m=t=>note('nuM',t);
  if(!isAdmin())return;
  if(!okMail(em))return m(mailMsg);
+ const un=$('nuU').value.trim().toLowerCase();
+ if(!UNRX.test(un))return m(UNMSG);
+ if(U.some(u=>(u.username||'')===un))return m('That username is already taken.');
  if(pw.length<8)return m('Password must be at least 8 characters.');
  if(U.some(u=>u.email===em))return m('That email already has an account.');
- const nu=await mkUser(em,pw,false,val('nuN'));
- if(!(await wr('users',nu.id,nu)))return m('Could not save. Please try again.');
- U.push(nu);go();
+ const nu=await mkUser(em,pw,false,val('nuN'),un);
+ try{const r=await tmo(api('adduser',{user:nu}));nu.id=r.id}catch(e){const c=e&&e.code;return m(c==='username_taken'?'That username is already taken.':c==='email_taken'?'That email already has an account.':'Could not save. Please try again.')}
+ const {salt,hash,...pub}=nu;U.push(pub);go();
 }
 function resetView(i){
  closeV();const u=U[i];if(!u||!isAdmin())return;
@@ -378,7 +412,9 @@ function resetView(i){
 async function doReset(i){
  await sync();const u=U[i],pw=$('rsP').value;if(!u||!isAdmin())return;
  if(pw.length<8)return note('rsM','Password must be at least 8 characters.');
- const salt=crypto.getRandomValues(new Uint8Array(16));u.salt=hex(salt);u.hash=await hashPw(pw,salt);if(!(await wr('users',u.id,{salt:u.salt,hash:u.hash},1)))return note('rsM','Could not save. Please try again.');closeV();
+ const salt=crypto.getRandomValues(new Uint8Array(16));
+ try{await tmo(api('resetpw',{id:u.id,salt:hex(salt),hash:await hashPw(pw,salt)}))}catch(e){return note('rsM','Could not save. Please try again.')}
+ closeV();
 }
 let wantSU=false;
 function swMode(){wantSU=!wantSU;showAuth()}
@@ -388,11 +424,11 @@ function showAuth(){
  $('app').style.display='none';$('auth').style.display='flex';$('aForm').style.display='';$('blk').style.display='none';
  mode=!U.length?'setup':wantSU?'signup':'login';const cr=mode!=='login';
  $('aT').textContent=mode==='setup'?'Create admin account':cr?'Create account':'Log in';
- $('aS').textContent=mode==='setup'?(OWN?'No accounts yet. The first account becomes the administrator.':'No accounts yet. The app owner must create the first account.'):cr?'Use your @riteproducts.com.ph email address.':'Enter your email and password to open the inventory.';
- $('aNm').style.display=$('aC').style.display=cr?'':'none';
+ $('aS').textContent=mode==='setup'?(OWN?'No accounts yet. The first account becomes the administrator. Enter the setup code from the Apps Script log.':'No accounts yet. The app owner must create the first account.'):cr?'Use your @riteproducts.com.ph email address.':'Enter your email or username and password. Ask your administrator if you need an account.';
+ $('aNm').style.display=$('aC').style.display=$('aUn').style.display=cr?'':'none';$('aEL').textContent=cr?'Email':'Email or username';$('aEmail').placeholder=cr?'name@riteproducts.com.ph':'Email or username';
  $('aB').textContent=cr?'Create account':'Log in';
- $('aSw').style.display=mode==='setup'?'none':'';$('aSw').textContent=cr?'Back to log in':'Create account';
- ['aName','aPass','aConf'].forEach(i=>$(i).value='');$('aMsg').textContent='';
+ $('aSw').style.display='none';$('aCd').style.display=mode==='setup'?'':'none';
+ ['aName','aUser','aPass','aConf','aCode'].forEach(i=>$(i).value='');$('aMsg').textContent='';
  document.querySelectorAll('#auth .eye').forEach(b=>{b.previousSibling.type='password';b.textContent='Show'});
 }
 function showApp(anim){
@@ -408,30 +444,43 @@ function showApp(anim){
 }
 async function authSubmit(ev){
  ev.preventDefault();
- const email=$('aEmail').value.trim().toLowerCase(),pw=$('aPass').value,m=t=>{$('aMsg').textContent=t};
- if(!okMail(email))return m(mailMsg);
+ const id=$('aEmail').value.trim().toLowerCase(),pw=$('aPass').value,m=t=>{$('aMsg').textContent=t};
+ if(!id)return m(mode==='login'?'Enter your email or username.':mailMsg);
  if(!window.crypto||!crypto.subtle)return m('This browser can’t do secure sign-in here.');
- await syncUsers();
- let u;const name=val('aName');
- if(!U.length||mode==='signup'){
-  if(!U.length&&!OWN)return m('Only the app owner can create the first account.');
-  if(!U.length&&email!==ADMIN_EMAIL)return m('The admin account must use '+ADMIN_EMAIL+'.');
-  if(!name)return m('Please enter your name.');
-  if(pw.length<8)return m('Password must be at least 8 characters.');
-  if(pw!==$('aConf').value)return m('Passwords do not match.');
-  if(U.some(x=>x.email===email))return m('That email already has an account. Please log in.');
-  if(!U.length&&DB.doc('meta/admin').create){try{await tmo(DB.doc('meta/admin').create({email}))}catch(e){await sync();showAuth();return m(e&&e.code==='already_exists'?'An admin account already exists. Please log in or create a user account.':'Could not create the account. Please try again.')}}
-  u=await mkUser(email,pw,!U.length,name);
-  if(!(await wr('users',u.id,u)))return m('Could not create the account. Please try again.');
-  U.push(u);
- }else{
-  u=U.find(x=>x.email===email);
-  if(!(u&&(await hashPw(pw,unhex(u.salt)))===u.hash)){await new Promise(r=>setTimeout(r,700));return m('Incorrect email or password.')}
+ try{
+  let r;
+  if(mode==='setup'){
+   if(!okMail(id))return m(mailMsg);
+   if(id!==ADMIN_EMAIL)return m('The admin account must use '+ADMIN_EMAIL+'.');
+   const name=val('aName'),un=$('aUser').value.trim().toLowerCase(),code=$('aCode').value.trim();
+   if(!name)return m('Please enter your name.');
+   if(!UNRX.test(un))return m(UNMSG);
+   if(pw.length<8)return m('Password must be at least 8 characters.');
+   if(pw!==$('aConf').value)return m('Passwords do not match.');
+   if(!code)return m('Enter the setup code.');
+   r=await tmo(api('bootstrap',{code,user:await mkUser(id,pw,true,name,un)}));
+  }else{
+   const s=await tmo(api('salt',{id}));
+   r=await tmo(api('login',{id,hash:await hashPw(pw,unhex(s.salt))}));
+  }
+  setTok(r.token);me=r.user.id;
+ }catch(e){
+  const c=e&&e.code;
+  if(c==='bad_login'){await new Promise(r=>setTimeout(r,700));return m('Incorrect email, username or password.')}
+  if(c==='locked')return m('Too many attempts. Try again in 15 minutes.');
+  if(c==='bad_code')return m('The setup code is not correct.');
+  if(c==='already_set_up')return m('An admin account already exists. Reload the page and log in.');
+  return m('Could not sign in. Please try again.');
  }
- me=idOf(u);try{sessionStorage.setItem(SK,me)}catch(e){}
+ await syncUsers();try{sessionStorage.setItem(SK,me)}catch(e){}
  showApp(1);loadAll();
 }
-function logout(){wantSU=false;$('pop').style.display='none';me=null;try{sessionStorage.removeItem(SK)}catch(e){}closeV();editing=null;showAuth()}
+const paintTg=()=>{const d=curTheme()==='dark';document.querySelectorAll('.tg').forEach(b=>{b.textContent=d?'☀':'☾';b.title=d?'Switch to light mode':'Switch to dark mode';b.setAttribute('aria-label',b.title)})};
+function curTheme(){return document.documentElement.dataset.theme||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light')}
+function toggleTheme(){const t=curTheme()==='dark'?'light':'dark';document.documentElement.dataset.theme=t;try{localStorage.setItem('rpi_theme',t)}catch(e){}paintTg()}
+try{matchMedia('(prefers-color-scheme:dark)').addEventListener('change',paintTg)}catch(e){}
+paintTg();
+function logout(){try{api('logout').catch(()=>{})}catch(e){}setTok('');wantSU=false;$('pop').style.display='none';me=null;try{sessionStorage.removeItem(SK)}catch(e){}closeV();editing=null;showAuth()}
 function eyes(){document.querySelectorAll('input[type=password]').forEach(i=>{if(i.dataset.pw)return;i.dataset.pw=1;const w=document.createElement('span');w.className='pw';i.parentNode.insertBefore(w,i);w.appendChild(i);const b=document.createElement('button');b.type='button';b.className='eye';b.textContent='Show';b.setAttribute('aria-label','Show or hide password');b.onclick=()=>{const h=i.type==='password';i.type=h?'text':'password';b.textContent=h?'Hide':'Show'};w.appendChild(b)})}
 new MutationObserver(eyes).observe(document.body,{childList:true,subtree:true});eyes();
 document.addEventListener('mousedown',e=>{if(e.target.closest('button'))e.preventDefault()},true);
@@ -466,15 +515,12 @@ function fsDB(cfg){
 async function refresh(){const t=tab;await sync();if(t===tab&&!dirty&&!document.querySelector('.mb'))go()}
 async function loadAll(){await sync();loaded=true;chrome();if(meU()&&!dirty&&!document.querySelector('.mb'))go()}
 async function boot(){
- let why='';
+ if(!/^https:\/\/script\.google\.com\//.test(API_URL))return showBlock('Cannot open the app','This page has no database address yet. Open index.html, set API_URL near the top of the script to your Apps Script web app URL, then reload.');
+ DB=apiDB();OWN=true;
  try{
-  if(window.claude){DB=await claude.use('db');const us=await claude.use('user');OWN=us?await us.isOwner():false;if(!DB)why='Please sign in to Claude to use this app.'}
-  else if(FB.projectId&&FB.apiKey){DB=fsDB(FB);OWN=location.hash==='#setup'}
-  else why='This app is not connected to a database yet. Add your Firebase details at the top of the file, then reload the page.';
- }catch(e){DB=null;why='Could not connect to the database. Please try again later.'}
- if(!DB)return showBlock('Cannot open the app',why);
- if(!window.claude){try{U=(await DB.collection('users').get()).docs.map(d=>d.data())}catch(e){const c=e&&e.code;return showBlock('Cannot connect to Firebase',c==='permission_denied'?'Firebase is refusing access. In Firebase, open Firestore Database, then Rules, paste the rules from the setup steps and press Publish.':c==='no_database'?'The Firestore database has not been created yet. In Firebase, open Build, then Firestore Database, and press Create database.':c==='invalid_argument'?'The Firebase apiKey or projectId in the file looks wrong. Check them in Firebase, Project settings.':'Could not reach Firebase ('+(c||'network error')+'). Check your internet connection and the Firebase details in the file.')}}
- if(window.claude)await syncUsers();
+  const st=await api('status');
+  if(st.user){me=st.user.id;await syncUsers()}else{me=null;setTok('');U=st.has?[{id:'_'}]:[]}
+ }catch(e){return showBlock('Cannot reach the database','Could not reach the inventory database. Check your connection and reload. If it keeps happening, ask the administrator to check the Apps Script deployment.')}
  if(U.some(x=>idOf(x)===me)){showApp();loadAll()}else showAuth();
  setInterval(async()=>{if(!meU()||busy)return;await sync();chrome();if(tab==='users'&&!document.querySelector('.mb')&&![...document.querySelectorAll('#main input')].some(i=>i.value))go()},30000);
 }
